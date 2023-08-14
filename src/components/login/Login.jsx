@@ -2,6 +2,8 @@ import React from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useStyles } from "./style";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema } from "../../utils/yup/index.js";
 
 const Login = () => {
   const classes = useStyles();
@@ -9,7 +11,15 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    resolver: yupResolver(loginSchema),
+  });
 
   const onSubmit = (data) => {
     console.log(data);
@@ -47,10 +57,7 @@ const Login = () => {
             </Typography>
           </Box>
           <TextField
-            {...register("email", {
-              required: "Обязательное поле",
-              pattern: /@/,
-            })}
+            {...register("email")}
             error={!!errors.email}
             variant="outlined"
             label="Email"
@@ -61,17 +68,7 @@ const Login = () => {
           />
 
           <TextField
-            {...register("password", {
-              required: "Обязательное поле",
-              maxLength: {
-                value: 20,
-                message: "Не больше 20 символов",
-              },
-              minLength: {
-                value: 5,
-                message: "Не менше 5 символов",
-              },
-            })}
+            {...register("password")}
             error={!!errors?.password}
             helperText={errors?.password?.message}
             variant="outlined"

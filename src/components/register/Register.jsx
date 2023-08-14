@@ -2,6 +2,8 @@ import React from "react";
 import { Box, TextField, Typography, Button } from "@mui/material";
 import { useStyles } from "./style";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registerSchema } from "../../utils/yup/index.js";
 
 const Register = () => {
   const classes = useStyles();
@@ -18,6 +20,7 @@ const Register = () => {
       email: "",
       password: "",
     },
+    resolver: yupResolver(registerSchema),
   });
 
   const onSubmit = (data) => {
@@ -58,18 +61,7 @@ const Register = () => {
             </Typography>
           </Box>
           <TextField
-            {...register("name", {
-              required: "Обязательное поле",
-              minLength: {
-                value: 3,
-                message: "Не меньше 3 букв",
-              },
-              maxLength: {
-                value: 30,
-                message: "Максимальное Количество букв 30",
-              },
-              pattern: /^[a-z]+/g,
-            })}
+            {...register("name")}
             error={!!errors?.name}
             helperText={errors?.name?.message}
             variant="outlined"
@@ -79,10 +71,7 @@ const Register = () => {
           />
 
           <TextField
-            {...register("email", {
-              required: "Обязательное поле",
-              pattern: /@/,
-            })}
+            {...register("email")}
             error={errors.email}
             helperText={errors?.email?.message}
             variant="outlined"
@@ -93,17 +82,7 @@ const Register = () => {
           />
 
           <TextField
-            {...register("password", {
-              required: "Обязательное поле",
-              maxLength: {
-                value: 20,
-                message: "Не больше 20 символов",
-              },
-              minLength: {
-                value: 5,
-                message: "Не менше 5 символов",
-              },
-            })}
+            {...register("password")}
             error={errors?.password}
             helperText={errors?.password?.message}
             variant="outlined"
