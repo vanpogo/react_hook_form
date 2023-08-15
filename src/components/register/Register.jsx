@@ -1,11 +1,14 @@
-import React from "react";
-import { Box, TextField, Typography, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Box, TextField, Typography } from "@mui/material";
 import { useStyles } from "./style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../utils/yup/index.js";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Register = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const classes = useStyles();
 
   const {
@@ -25,6 +28,7 @@ const Register = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    setIsLoading(true);
     reset();
   };
 
@@ -92,14 +96,15 @@ const Register = () => {
             margin="normal"
           />
 
-          <Button
+          <LoadingButton
             className={classes.btn}
             variant="contained"
-            // fullWidth
+            fullWidth
             type="submit"
+            loading={isLoading}
           >
             Зарегистрироваться
-          </Button>
+          </LoadingButton>
         </form>
       </Box>
     </Box>

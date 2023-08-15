@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useStyles } from "./style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../utils/yup/index.js";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const classes = useStyles();
   const {
     register,
@@ -23,6 +26,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    setIsLoading(true);
   };
   return (
     <Box
@@ -78,14 +82,16 @@ const Login = () => {
             margin="normal"
           />
 
-          <Button
+          <LoadingButton
             className={classes.btn}
-            variant="contained"
-            // fullWidth
             type="submit"
+            fullWidth
+            size="normal"
+            loading={isLoading}
+            variant="contained"
           >
             Войти
-          </Button>
+          </LoadingButton>
         </form>
       </Box>
     </Box>
